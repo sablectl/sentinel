@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#000000" />
+    <title>Sentinel</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="module" src="/main.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <section id="login-panel" class="login-panel" aria-labelledby="login-title">
+      <div class="login-mark" aria-hidden="true">S</div>
+      <p class="eyebrow">LOCAL SECURITY EVENT ANALYSIS</p>
+      <h1 id="login-title">Sentinel</h1>
+      <p class="muted">Enter the local access token to open this dashboard.</p>
+      <form id="login-form" class="login-form">
+        <label class="field" for="login-token">
+          <span>Access token</span>
+          <input
+            id="login-token"
+            name="token"
+            type="password"
+            autocomplete="current-password"
+            spellcheck="false"
+            required
+          />
+        </label>
+        <button class="button button-primary" type="submit">
+          Establish session
+        </button>
+        <p
+          id="login-status"
+          class="form-status"
+          role="status"
+          aria-live="polite"
+        ></p>
+      </form>
+      <p class="login-footnote">
+        The token is submitted locally and is not placed in the page URL.
+      </p>
+    </section>
+
+    <div id="app-shell" class="app-shell" hidden>
+      <header class="topbar">
+        <a class="brand" href="#/overview" aria-label="Sentinel overview">
+          <span class="brand-mark" aria-hidden="true">S</span>
+          <span>SENTINEL</span>
+        </a>
+        <div class="topbar-tools">
+          <div id="connection" class="connection" data-state="connecting">
+            <span class="connection-dot" aria-hidden="true"></span>
+            <span id="connection-text">Connecting</span>
+          </div>
+          <button id="logout" class="button button-secondary" type="button">
+            Lock
+          </button>
+        </div>
+      </header>
+      <nav class="navigation" aria-label="Primary navigation">
+        <ul id="nav-list" class="nav-list"></ul>
+      </nav>
+      <main id="main-content" class="main-content" tabindex="-1">
+        <div
+          id="degraded-banner"
+          class="degraded-banner"
+          role="status"
+          hidden
+        ></div>
+        <div id="view-root"></div>
+      </main>
+      <footer class="footer">
+        <span>Local-first · No telemetry · Loopback by default</span>
+        <span id="footer-version"></span>
+      </footer>
+    </div>
+  </body>
+</html>

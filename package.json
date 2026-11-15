@@ -1,0 +1,55 @@
+{
+  "name": "@sablectl/sentinel",
+  "version": "0.1.0",
+  "description": "Local-first Linux security event ingestion and investigation platform by Sable.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Sable <355646062+sablectl@users.noreply.github.com>",
+  "homepage": "https://github.com/sablectl/sentinel#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sablectl/sentinel.git"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "bin": {
+    "sentinel": "./dist/bin/sentinel.js"
+  },
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "npm run build:server && npm run build:web",
+    "build:server": "tsc -p tsconfig.build.json",
+    "build:web": "tsc -p tsconfig.web.json && node scripts/copy-web.js",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "test:watch": "vitest --project unit",
+    "bench": "npm run build && node scripts/bench.js",
+    "verify": "npm run check && npm run lint && npm run format:check && npm test && npm run test:integration && npm run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.10.1",
+    "eslint": "^10.15.0",
+    "globals": "^17.14.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.72.2",
+    "vitest": "^5.1.0"
+  },
+  "overrides": {
+    "minimatch": "^11.0.8"
+  }
+}
