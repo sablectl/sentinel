@@ -2,7 +2,7 @@
 
 Notable changes to Sentinel are recorded here.
 
-## [0.1.0] - 2026-11-14
+## [1.0.0] - 2026-11-15
 
 ### Added
 

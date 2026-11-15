@@ -573,22 +573,26 @@ describe("HTTP session and admission controls", () => {
     const reader = first.body?.getReader();
     if (reader === undefined)
       throw new Error("SSE response body was unavailable");
-    await reader.read();
-    const firstUpdate = reader.read();
+    const decoder = new TextDecoder();
+    let buffered = "";
+    // Keep-alive comments may be interleaved with payloads, so read until the
+    // expected text arrives rather than assuming one chunk per publish.
+    const readUntil = async (needle: string): Promise<void> => {
+      while (!buffered.includes(needle)) {
+        const chunk = await reader.read();
+        if (chunk.done) throw new Error(`stream closed before ${needle}`);
+        buffered += decoder.decode(chunk.value, { stream: true });
+      }
+    };
+
     server.app.stream.publish("event.created", { id: "first-event" });
-    expect(new TextDecoder().decode((await firstUpdate).value)).toContain(
-      "first-event",
-    );
+    await readUntil("first-event");
     server.app.stream.publish("event.created", { id: "dropped-event" });
     await new Promise((resolve) => setTimeout(resolve, 1_001));
-    const degradedUpdate = reader.read();
     server.app.stream.publish("event.created", { id: "next-event" });
-    expect(new TextDecoder().decode((await degradedUpdate).value)).toContain(
-      "stream.degraded",
-    );
-    expect(new TextDecoder().decode((await reader.read()).value)).toContain(
-      "next-event",
-    );
+    await readUntil("stream.degraded");
+    await readUntil("next-event");
+    expect(buffered).not.toContain("dropped-event");
 
     const second = await fetch(`${server.baseUrl}/api/stream`, {
       headers: { Cookie: cookie, Origin: server.origin },

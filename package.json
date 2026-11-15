@@ -1,6 +1,6 @@
 {
   "name": "@sablectl/sentinel",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Local-first Linux security event ingestion and investigation platform by Sable.",
   "type": "module",
   "license": "MIT",
